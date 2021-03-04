@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.example.androiddevchallenge
+package dev.benjamin.pado
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -23,39 +23,42 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.androiddevchallenge.ui.theme.MyTheme
+import dev.benjamin.pado.data.PetRepository
+import dev.benjamin.pado.ui.HomeScreen
+import dev.benjamin.pado.ui.Screen
+import dev.benjamin.pado.ui.theme.PadoTheme
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MyTheme {
-                MyApp()
+            PadoTheme {
+                // A surface container using the 'background' color from the theme
+                Surface(color = MaterialTheme.colors.background) {
+                    HomeScreen(PetRepository.getPets()) { screen ->
+                        when (screen) {
+                            is Screen.Detail -> {
+                                launchDetailsActivity(this, screen.petId)
+                            }
+                            else -> {
+                            }
+                        }
+                    }
+                }
             }
         }
     }
 }
 
-// Start building your app here!
 @Composable
-fun MyApp() {
-    Surface(color = MaterialTheme.colors.background) {
-        Text(text = "Ready... Set... GO!")
-    }
+fun Greeting(name: String) {
+    Text(text = "Hello $name!")
 }
 
-@Preview("Light Theme", widthDp = 360, heightDp = 640)
+@Preview(showBackground = true)
 @Composable
-fun LightPreview() {
-    MyTheme {
-        MyApp()
-    }
-}
-
-@Preview("Dark Theme", widthDp = 360, heightDp = 640)
-@Composable
-fun DarkPreview() {
-    MyTheme(darkTheme = true) {
-        MyApp()
+fun DefaultPreview() {
+    PadoTheme {
+        Greeting("Android")
     }
 }
